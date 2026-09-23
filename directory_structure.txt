@@ -1,0 +1,6 @@
+.
+./docs
+./src
+./src/worcap_forecast
+./src/worcap_forecast/config
+./tests
