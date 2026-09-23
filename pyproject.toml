@@ -1,0 +1,28 @@
+[build-system]
+requires = ["setuptools==84.0.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "worcap2026-precipitation"
+version = "0.1.0"
+description = "Five-model monthly precipitation forecast for WORCAP 2026"
+requires-python = ">=3.12,<3.13"
+license = "MIT"
+dependencies = ["numpy==2.5.3", "scipy==1.18.1", "lightgbm==4.6.0", "torch==2.8.0"]
+
+[project.optional-dependencies]
+dev = ["pytest==9.1.1", "ruff==0.16.8"]
+
+[project.scripts]
+worcap-forecast = "worcap_forecast.__main__:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.setuptools.package-data]
+worcap_forecast = ["config/*.json"]
+
+[tool.pytest.ini_options]
+pythonpath = ["src"]
+testpaths = ["tests"]
+markers = ["integration: requires the verified package and prepared work on the local machine"]

@@ -1,0 +1,75 @@
+{
+  "unet": {
+    "seed": 42,
+    "updates": 1200,
+    "schedule_updates": 1920,
+    "warmup_updates": 120,
+    "batch_size": 4,
+    "learning_rate": 0.0003,
+    "weight_decay": 0.01
+  },
+  "tabular": {
+    "parameters": {
+      "objective": "regression",
+      "learning_rate": 0.03,
+      "max_bin": 63,
+      "feature_fraction": 0.9,
+      "bagging_fraction": 0.8,
+      "bagging_freq": 1,
+      "deterministic": true,
+      "force_col_wise": true,
+      "num_threads": 8,
+      "verbosity": -1,
+      "boost_from_average": false,
+      "seed": 42,
+      "data_random_seed": 42,
+      "feature_fraction_seed": 42,
+      "bagging_seed": 42,
+      "num_leaves": 31,
+      "max_depth": 6,
+      "min_data_in_leaf": 1000,
+      "lambda_l2": 10.0
+    },
+    "rounds": 1200
+  },
+  "temporal": {
+    "threads": 6,
+    "coarse_stride": 4,
+    "width": 32,
+    "heads": 4,
+    "queries": 2,
+    "seeds": [
+      42,
+      2026
+    ],
+    "max_epochs": 24,
+    "learning_rate": 0.0003,
+    "weight_decay": 0.01,
+    "residual_penalty": 0.01,
+    "epochs": 11
+  },
+  "gefs": {
+    "parameters": {
+      "objective": "regression",
+      "learning_rate": 0.03,
+      "num_leaves": 31,
+      "max_depth": 6,
+      "min_data_in_leaf": 20000,
+      "lambda_l2": 200.0,
+      "max_bin": 63,
+      "feature_fraction": 0.9,
+      "bagging_fraction": 0.8,
+      "bagging_freq": 1,
+      "deterministic": true,
+      "force_col_wise": true,
+      "boost_from_average": false,
+      "seed": 42,
+      "data_random_seed": 42,
+      "feature_fraction_seed": 42,
+      "bagging_seed": 42,
+      "num_threads": 12,
+      "verbosity": -1
+    },
+    "rounds": 400
+  }
+}

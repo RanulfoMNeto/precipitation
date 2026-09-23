@@ -1,0 +1,7 @@
+{
+  "competition_dir": "competition-originals",
+  "data_dir": "data",
+  "source_cache_dir": "source-cache",
+  "work_dir": "work",
+  "submission_path": "submission.csv"
+}

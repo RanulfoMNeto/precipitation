@@ -1,0 +1,41 @@
+{
+  "1999": {
+    "unet_updates": 1200
+  },
+  "2001": {
+    "unet_updates": 1200
+  },
+  "2003": {
+    "unet_updates": 1200
+  },
+  "2005": {
+    "unet_updates": 1200
+  },
+  "2007": {
+    "unet_updates": 1200
+  },
+  "2009": {
+    "unet_updates": 1200
+  },
+  "2011": {
+    "unet_updates": 1200
+  },
+  "2013": {
+    "unet_updates": 1200
+  },
+  "2015": {
+    "unet_updates": 1200
+  },
+  "2017": {
+    "unet_updates": 1200
+  },
+  "2019": {
+    "unet_updates": 1200
+  },
+  "2021": {
+    "unet_updates": 1200
+  },
+  "2023": {
+    "unet_updates": 1200
+  }
+}
