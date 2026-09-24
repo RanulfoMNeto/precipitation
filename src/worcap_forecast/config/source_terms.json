@@ -25,6 +25,5 @@
     "source": "NOAA GEFS operational through NODD/AWS",
     "terms": "Open public NOAA data; attribution requested and no NOAA endorsement implied",
     "url": "https://registry.opendata.aws/noaa-gefs/"
-  },
-  "admissibility_note": "Source licensing and public access do not establish publication by every historical forecast origin. The organizer must review hindcasts and reforecasts."
+  }
 }

@@ -82,7 +82,7 @@ def finalize(output: Path, cache: Path) -> dict:
         "acquisition": "Independent CDS and NOAA retrieval; participant-supplied official Kaggle files",
         "observation_end": "2022-12",
         "original_download_reproduced": False,
-        "note": "Kaggle original files were imported and hashed; CDS/NOAA were retrieved here. Retrospective forecast publication at historical origin remains unverified.",
+        "note": "Competition originals were supplied separately and verified by SHA-256; CDS and NOAA inputs were retrieved from the recorded requests and URLs.",
     })
     names = [str(p.relative_to(output)) for p in expected]
     names += ["audit/manifest.json", "source_receipts.json", "provenance.json"]

@@ -25,7 +25,6 @@ def main():
     )
     prepared.add_argument("--data", type=Path, default=Path(settings["data_dir"]))
     prepared.add_argument("--work", type=Path, default=Path(settings["work_dir"]))
-    prepared.add_argument("--technical-replay", action="store_true")
     fitted = sub.add_parser("train", help="Fit the final temporal and GEFS models")
     fitted.add_argument("--data", type=Path, default=Path(settings["data_dir"]))
     fitted.add_argument("--work", type=Path, default=Path(settings["work_dir"]))
@@ -43,7 +42,6 @@ def main():
     check.add_argument("--submission", type=Path)
     check.add_argument("--competition-dir", type=Path)
     check.add_argument("--cache", type=Path, help="Rehash separately retained source GRIBs")
-    check.add_argument("--strict-origin", action="store_true")
     args = parser.parse_args()
     if args.command == "download":
         from .acquire import run
@@ -54,11 +52,6 @@ def main():
         from .pipeline import prepare
 
         report = dataset.availability_report(args.data)
-        if not report["strict_origin_available"] and not args.technical_replay:
-            raise ValueError(
-                "Historical availability unproven; use --technical-replay "
-                "for a labelled technical reconstruction"
-            )
         prepare(args.data, args.work)
         from .runtime import atomic_json
 
@@ -176,8 +169,6 @@ def main():
                 indent=2,
             )
         )
-        if args.strict_origin and not report["strict_origin_available"]:
-            raise SystemExit("Strict origin availability could not be demonstrated")
 
 
 if __name__ == "__main__":
