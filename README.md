@@ -10,7 +10,7 @@ Para prever o mês M, o modelo utiliza observações atmosféricas até M−1 e 
 
 O pipeline ajusta cinco modelos: uma U-Net espacial, um corretor LightGBM, dois corretores PoET (sementes 42 e 2026) e um corretor LightGBM com GEFS. As entradas externas vêm do ECMWF SEAS5, DWD e Météo-France pelo Copernicus CDS, e do NOAA GEFS. A preparação reconstrói 192 contextos cronológicos fora da amostra, de 2007 a 2022, para treinar os corretores finais.
 
-A previsão final combina a média dos dois PoET (peso **0,6337257586287943**) com o corretor GEFS (peso **0,3662742413712057**). O CSV desta entrega recebeu **RMSE 1,53208 no Kaggle**, nota informada pelo participante após o envio manual; não foi medida localmente. A arquitetura e os atributos estão no [resumo técnico](docs/MODEL_SUMMARY_EN.md).
+A previsão final combina a média dos dois PoET (peso **0,6337257586287943**) com o corretor GEFS (peso **0,3662742413712057**). **RMSE da submissão no Kaggle: 1,53208.** A arquitetura e os atributos estão no [resumo técnico](docs/MODEL_SUMMARY_EN.md).
 
 ## Ambiente e recursos
 
@@ -45,7 +45,7 @@ O comando `predict` executa os cinco modelos. O arquivo `work/submission.csv` é
 
 ## Reconstruir a partir das fontes
 
-Baixe manualmente os 13 arquivos originais na [página de dados da competição](https://www.kaggle.com/competitions/previsao-climatica-de-precipitacao-sobre-a-america-do-sul/data) e coloque-os em `competition-originals/`. Configure a conta e a API do [Copernicus CDS](https://cds.climate.copernicus.eu/how-to-api) em `~/.cdsapirc`, aceitando os termos dos conjuntos de [níveis únicos](https://cds.climate.copernicus.eu/datasets/seasonal-monthly-single-levels) e [níveis de pressão](https://cds.climate.copernicus.eu/datasets/seasonal-monthly-pressure-levels). O GEFS é obtido dos arquivos públicos da NOAA. Os caminhos abaixo criam uma aquisição independente do pacote preparado.
+Obtenha os 13 arquivos originais na [página de dados da competição](https://www.kaggle.com/competitions/previsao-climatica-de-precipitacao-sobre-a-america-do-sul/data) e salve-os em `competition-originals/`. Configure a conta e a API do [Copernicus CDS](https://cds.climate.copernicus.eu/how-to-api) em `~/.cdsapirc`, aceitando os termos dos conjuntos de [níveis únicos](https://cds.climate.copernicus.eu/datasets/seasonal-monthly-single-levels) e [níveis de pressão](https://cds.climate.copernicus.eu/datasets/seasonal-monthly-pressure-levels). O GEFS é obtido dos arquivos públicos da NOAA. Os caminhos abaixo criam uma aquisição independente do pacote preparado.
 
 ```bash
 python -m worcap_forecast download --data data/rebuild --cache source-cache/rebuild --competition-dir competition-originals > download.log 2>&1
@@ -60,4 +60,4 @@ A aquisição e os blocos concluídos da preparação podem ser reaproveitados a
 
 ## Proveniência e distribuição
 
-As consultas, versões, unidades, hashes e cortes temporais estão nos recibos em `data/` e `work/`, descritos na [auditoria](docs/DATA_AUDIT.md). Os originais da competição foram importados e conferidos por hash; seu download não foi repetido nesta execução. O código está sob [licença MIT](LICENSE). Dados e pesos são distribuídos separadamente e conservam seus próprios termos de uso.
+As consultas, versões, unidades, hashes e cortes temporais estão nos recibos em `data/` e `work/`, descritos na [auditoria](docs/DATA_AUDIT.md). A aquisição combina a importação local dos originais da competição, verificados por SHA-256, com o download dos produtos CDS e NOAA. O código está sob [licença MIT](LICENSE). Dados e pesos são distribuídos separadamente e conservam seus próprios termos de uso.

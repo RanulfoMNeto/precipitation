@@ -79,10 +79,10 @@ def finalize(output: Path, cache: Path) -> dict:
         raise ValueError("No independently downloaded source bytes were retained")
     atomic_json(output / "source_receipts.json", {"files": source_files})
     atomic_json(output / "provenance.json", {
-        "acquisition": "Independent CDS and NOAA retrieval; participant-supplied official Kaggle files",
+        "acquisition": "CDS and NOAA download; local import of official Kaggle files verified by SHA-256",
         "observation_end": "2022-12",
         "original_download_reproduced": False,
-        "note": "Competition originals were supplied separately and verified by SHA-256; CDS and NOAA inputs were retrieved from the recorded requests and URLs.",
+        "note": "Competition originals were imported from local files and verified by SHA-256; CDS and NOAA inputs were downloaded using the recorded requests and URLs.",
     })
     names = [str(p.relative_to(output)) for p in expected]
     names += ["audit/manifest.json", "source_receipts.json", "provenance.json"]

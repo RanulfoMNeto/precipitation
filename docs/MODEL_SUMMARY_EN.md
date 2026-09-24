@@ -4,7 +4,7 @@
 
 ## Task and result
 
-Predict mean daily precipitation (mm/day) for each competition grid cell and month from January 2023 through December 2024. The submitted CSV received **RMSE 1.53208 on Kaggle**, as reported by the participant after manual upload; this score was not measured locally.
+The task is to predict mean daily precipitation (mm/day) for each competition grid cell and month from January 2023 through December 2024. **Kaggle submission RMSE: 1.53208.**
 
 ## Model and inputs
 

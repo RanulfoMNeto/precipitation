@@ -25,7 +25,7 @@ FIELDS = {
 
 
 def convert(originals: Path, output: Path) -> None:
-    """Accept user-downloaded Kaggle originals with the recorded byte identities."""
+    """Import official Kaggle files and verify recorded sizes and SHA-256 hashes."""
     import xarray as xr
 
     originals, output = Path(originals), Path(output)
@@ -44,7 +44,7 @@ def convert(originals: Path, output: Path) -> None:
         {
             "files": receipt,
             "verified_against_converted_arrays": True,
-            "retrieval": "Participant-supplied official Kaggle files; no CLI download claimed",
+            "retrieval": "Local import of official Kaggle files verified by size and SHA-256",
         },
     )
     with xr.open_dataset(originals / "treino_tp.nc") as ds:

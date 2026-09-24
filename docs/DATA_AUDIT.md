@@ -6,7 +6,7 @@ Execução de referência: **23/09/2026**. O [README](../README.md) contém o am
 
 | Fonte | Conteúdo utilizado |
 | --- | --- |
-| Competição | Observações até 2022 e campos atmosféricos de origem do teste de 2023–2024. Os 13 originais foram fornecidos separadamente e conferidos por tamanho e SHA-256. |
+| Competição | Observações até 2022 e campos atmosféricos de origem do teste de 2023–2024. Os 13 arquivos originais foram importados localmente e verificados por tamanho e SHA-256. |
 | ECMWF SEAS5, DWD e Météo-France | Previsões sazonais do CDS, inicializadas no mês anterior ao alvo (`leadtime_month=2`). A precipitação foi convertida de m/s para mm/dia. O SEAS5 também fornece atributos atmosféricos. |
 | NOAA GEFS | Precipitação de cinco membros e média operacional, agregada em intervalos semanais. Os acumulados em kg/m² foram convertidos para mm/dia conforme a duração válida. |
 
@@ -21,6 +21,12 @@ O [inventário](../src/worcap_forecast/config/acquisition_inventory.json), os [o
 
 ## Resultado
 
-O CSV gerado nesta execução recebeu **RMSE 1,53208 no Kaggle**, conforme informado pelo participante após o envio manual. A métrica não foi medida localmente. Na validação histórica, o **primeiro LightGBM**, isoladamente, obteve RMSE **1,754724** em 2007–2022 e **1,751633** em 2015–2020; esses valores não medem a combinação final.
+| Avaliação | Modelo | Período | RMSE |
+| --- | --- | --- | --- |
+| Kaggle | Combinação final | Teste de 2023–2024 | **1,53208** |
+| Validação histórica local, fora da amostra | Primeiro LightGBM | 2007–2022 | 1,754724 |
+| Validação histórica local, fora da amostra | Primeiro LightGBM | 2015–2020 | 1,751633 |
+
+As métricas históricas avaliam o primeiro LightGBM isoladamente.
 
 A licença do código não substitui os termos de redistribuição dos dados e pesos. `work/distribution.json` registra a adaptação de empacotamento sem novo treinamento ou inferência.

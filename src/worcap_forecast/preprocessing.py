@@ -187,7 +187,7 @@ class Examples:
             ]
             baseline += anomaly
         else:
-            # Nem consulta o arquivo externo. Capacidade e inicialização continuam idênticas.
+            # Canais sazonais zerados preservam o formato de entrada da rede.
             channels += [np.zeros_like(climate), np.zeros_like(climate)]
         result = {
             "features": np.stack(channels).astype(np.float32),
