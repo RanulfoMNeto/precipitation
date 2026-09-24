@@ -1,41 +1,26 @@
-# Auditoria de dados e execução
+# Auditoria dos dados e da execução
 
-Execução de referência: **23/09/2026**. Ambiente e comandos no [README](../README.md).
+Execução de referência: **23/09/2026**. O [README](../README.md) contém o ambiente e os comandos.
 
-## Fontes
+## Proveniência
 
-| Fonte | Uso e proveniência |
+| Fonte | Conteúdo utilizado |
 | --- | --- |
-| Competição | Observações de 1940–2022 e origens do teste de 2023–2024. Treze arquivos fornecidos pelo participante, importados e verificados por tamanho e SHA-256; o download Kaggle não foi repetido. |
-| ECMWF SEAS5, DWD e Météo-France | Nova aquisição pelo CDS. Previsões mensais e ensembles; precipitação convertida de m/s para mm/dia, lead 2. SEAS5 inclui campos atmosféricos. Inicializações, sistemas e períodos exatos constam no inventário e nos recibos. |
-| NOAA GEFS | Nova aquisição dos arquivos públicos operacionais e de reforecast; agregados de 2007–2024. Precipitação acumulada em kg/m² convertida para mm/dia pela duração válida. URLs, hashes e `Last-Modified` registrados. |
+| Competição | Observações até 2022 e campos atmosféricos de origem do teste de 2023–2024. Os 13 originais foram fornecidos separadamente e conferidos por tamanho e SHA-256. |
+| ECMWF SEAS5, DWD e Météo-France | Previsões sazonais do CDS, inicializadas no mês anterior ao alvo (`leadtime_month=2`). A precipitação foi convertida de m/s para mm/dia. O SEAS5 também fornece atributos atmosféricos. |
+| NOAA GEFS | Precipitação de cinco membros e média operacional, agregada em intervalos semanais. Os acumulados em kg/m² foram convertidos para mm/dia conforme a duração válida. |
 
-[Inventário](../src/worcap_forecast/config/acquisition_inventory.json) · [Originais esperados](../src/worcap_forecast/config/competition_expected.json) · [Licenças e fontes oficiais](../src/worcap_forecast/config/source_terms.json).
+O [inventário](../src/worcap_forecast/config/acquisition_inventory.json), os [originais esperados](../src/worcap_forecast/config/competition_expected.json) e os [termos das fontes](../src/worcap_forecast/config/source_terms.json) identificam os produtos. `data/provenance.json`, `data/source_receipts.json` e `data/manifest.json` registram consultas, URLs, versões, períodos e hashes. Os fornecedores classificam parte dos produtos históricos como hindcasts ou reforecasts; os recibos preservam essas classificações. O calendário dos sistemas CDS documenta os períodos operacionais, e os objetos GEFS do teste têm `Last-Modified` anterior ao mês-alvo. As respostas CDS não incluem horário individual de primeira publicação.
 
-## Verificações
+## Cortes e verificações
 
-- **Integridade:** 13 originais, 22.720 arquivos de origem e 8.815 arquivos no manifesto conferidos. Consultas, versões, unidades, períodos e hashes estão em `data/provenance.json`, `source_receipts.json` e `manifest.json`.
-- **Corte temporal:** para prever M, observações até M−1; rótulos de treinamento até 2022-12. Normalização e calibração usam apenas o prefixo disponível. A linha seguinte do teste não altera os atributos de M.
-- **OOF:** 13 ajustes U-Net e nove ajustes tabulares por prefixo geram 192 meses fora da amostra, de 2007-01 a 2022-12.
-- **Inferência:** executa os cinco modelos, sem reutilizar previsões de teste. Dez testes passaram. CSV com 1.885.464 linhas, IDs e ordem oficiais, valores finitos e não negativos. `work/submission.json` vincula seu hash ao código, dados, modelos e ambiente.
+- Para o alvo M, somente observações até M−1 entram nos atributos. A precipitação observada termina em **2022-12**; nenhum rótulo de 2023–2024 integra o treinamento.
+- Normalização e calibração usam os prefixos anteriores a cada bloco. Foram executados 13 ajustes U-Net e nove ajustes do primeiro LightGBM; os 192 contextos fora da amostra cobrem **2007-01–2022-12**.
+- A inferência executa os cinco modelos para **2023-01–2024-12**, sem reutilizar previsões de teste. O CSV contém **1.885.464** linhas, com IDs e ordem oficiais, valores finitos e não negativos.
+- Os 13 originais, 22.720 arquivos de origem e 8.815 arquivos do manifesto foram verificados. Dez testes de integridade, reconstrução e corte temporal passaram. `work/submission.json` vincula CSV, dados, código e pesos.
 
-## Resultados
+## Resultado
 
-| Avaliação | RMSE |
-| --- | ---: |
-| Primeiro corretor LightGBM, OOF 2007–2022 | 1,754724 |
-| Primeiro corretor LightGBM, OOF 2015–2020 | 1,751633 |
-| Receita original, envio manual ao Kaggle | 1,53551 |
-| CSV desta execução, envio manual ao Kaggle | 1,53208 |
+O CSV gerado nesta execução recebeu **RMSE 1,53208 no Kaggle**, conforme informado pelo participante após o envio manual. A métrica não foi medida localmente. Na validação histórica, o **primeiro LightGBM**, isoladamente, obteve RMSE **1,754724** em 2007–2022 e **1,751633** em 2015–2020; esses valores não medem a combinação final.
 
-As notas Kaggle foram **informadas pelo participante**. As métricas OOF medem apenas o primeiro corretor, não a combinação final. Um novo treinamento pode produzir previsões diferentes.
-
-## Disponibilidade e distribuição
-
-Um organizador confirmou que dados públicos do Copernicus podem ser utilizados. A comprovação de publicação dos hindcasts CDS e reforecasts GEFS em cada origem histórica permanece pendente: inicialização não comprova disponibilidade. Por isso, `verify --strict-origin` falha e a reconstrução usa `prepare --technical-replay`. A interpretação desses produtos históricos cabe aos organizadores.
-
-Para os 24 meses de teste, os 144 objetos GEFS operacionais possuem `Last-Modified` anterior ao respectivo mês-alvo. Essa evidência não se estende aos demais produtos.
-
-A licença MIT do código não altera os direitos dos dados e pesos. Antes da publicação do pacote preparado, confira os termos de redistribuição indicados em `source_terms.json`.
-
-O pacote preparado preserva dados numéricos, pesos e CSV. A adaptação para execução local e a remoção de metadados pessoais estão registradas em `work/distribution.json`, com hashes anteriores e atuais; não representam novo treinamento ou inferência.
+A licença do código não substitui os termos de redistribuição dos dados e pesos. `work/distribution.json` registra a adaptação de empacotamento sem novo treinamento ou inferência.
